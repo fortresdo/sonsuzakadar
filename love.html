@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sonsuza Kadar mı?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fff0f3;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            overflow: hidden;
+            text-align: center;
+            touch-action: manipulation; /* Mobil gecikmesini önler */
+        }
+
+        .container {
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            width: 80%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 75, 110, 0.2);
+            border: 2px solid #ffb3c1;
+        }
+
+        h1 {
+            color: #c9184a;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column; /* Mobilde butonlar alt alta daha rahat olur */
+            align-items: center;
+            gap: 20px;
+            height: 150px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 200px;
+            transition: all 0.2s ease;
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+            z-index: 11;
+        }
+
+        #noBtn {
+            background-color: #808080;
+            color: white;
+            position: fixed; /* Mobilde her yere kaçabilmesi için */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .floating-text {
+            position: fixed;
+            top: -50px;
+            font-weight: bold;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainBox">
+        <h1 id="question">Bu ömrü beraber yaşamayı<br>kabul ediyor musun?</h1>
+        <div class="buttons">
+            <button id="yesBtn" onclick="celebrate()">EVET</button>
+            <button id="noBtn" 
+                onmouseover="moveNoButton()" 
+                onclick="moveNoButton()" 
+                ontouchstart="moveNoButton()">HAYIR</button>
+        </div>
+    </div>
+
+    <script>
+        function createBackgroundElements() {
+            const elements = ['Katre', 'OPIA', '❤', '💕'];
+            setInterval(() => {
+                const el = document.createElement('div');
+                const content = elements[Math.floor(Math.random() * elements.length)];
+                el.className = 'floating-text';
+                el.innerText = content;
+                el.style.left = Math.random() * 90 + 'vw';
+                el.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                el.style.color = content.length > 1 ? '#ff4d6d' : '#ffb3c1';
+                el.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 6000);
+            }, 400);
+        }
+
+        createBackgroundElements();
+
+        function moveNoButton() {
+            const btn = document.getElementById('noBtn');
+            // Ekran sınırlarını hesapla (butonun boyutu dahil)
+            const maxX = window.innerWidth - btn.offsetWidth;
+            const maxY = window.innerHeight - btn.offsetHeight;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+            btn.style.transform = 'none'; // İlk baştaki ortalamayı iptal et
+        }
+
+        function celebrate() {
+            document.getElementById('mainBox').innerHTML = `
+                <h1 style="font-size: 2.5rem;">OLEYYYYY!!!!! İYİ Kİ VARSIN! ❤️</h1>
+                <p style="font-size: 1.2rem; color: #ff4d6d; font-weight: bold;">
+                    biricik bebeğim
+                </p>
+                <div style="font-size: 3rem; margin-top: 10px;">❤️❤️❤️❤️❤️</div>
+            `;
+            // Hızlı yağmur efekti
+            setInterval(createBackgroundElements, 100);
+        }
+    </script>
+</body>
+</html>
